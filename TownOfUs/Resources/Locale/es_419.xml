@@ -42,6 +42,13 @@
   <string name="Violet">Violeta</string>
   <string name="CottonCandy">Algodón de Azúcar</string>
   <string name="Rainbow">Arcoiris</string>
+  <string name="SkimsBlue">Skims Blue</string>
+  <string name="CloudBlue">Cloud Blue</string>
+  <string name="LavenderPurple">Lavender Purple</string>
+  <string name="SunflowerYellow">Sunflower Yellow</string>
+  <string name="CigarettePackage">Cigarette Package</string>
+  <string name="LightPrincessPink">Light Princess Pink</string>
+  <string name="LightGoldCoin">Light Gold Coin</string>
   <string name="BackButtonText">Atrás</string>
   <string name="Alignment">Alineación</string>
   <string name="WikiDescriptionTab">Descripción</string>

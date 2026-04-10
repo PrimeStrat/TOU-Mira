@@ -26,6 +26,13 @@
   <string name="Violet">Violetto</string>
   <string name="Denim">Jeans</string>
   <string name="Rainbow">Arcobaleno</string>
+  <string name="SkimsBlue">Skims Blue</string>
+  <string name="CloudBlue">Cloud Blue</string>
+  <string name="LavenderPurple">Lavender Purple</string>
+  <string name="SunflowerYellow">Sunflower Yellow</string>
+  <string name="CigarettePackage">Cigarette Package</string>
+  <string name="LightPrincessPink">Light Princess Pink</string>
+  <string name="LightGoldCoin">Light Gold Coin</string>
   <string name="BackButtonText">Indietro</string>
   <string name="WikiDescriptionTab">Descrizione</string>
   <string name="WikiAbilitiesTab">Abilità</string>

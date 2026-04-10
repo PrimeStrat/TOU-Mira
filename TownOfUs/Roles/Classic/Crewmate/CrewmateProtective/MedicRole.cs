@@ -308,8 +308,15 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
             { 48, "darker" }, // Violet
             { 49, "darker" }, // Denim
             { 50, "lighter" }, // Cotton Candy
+            { 51, "lighter" }, // Rainbow
 
-            { 51, "lighter" } // rainbow
+            { 52, "lighter" }, // Skims Blue
+            { 53, "lighter" }, // Cloud Blue
+            { 54, "lighter" }, // Lavender Purple
+            { 55, "lighter" }, // Sunflower Yellow
+            { 56, "darker" }, // Cigarette Package
+            { 57, "lighter" }, // Light Princess Pink
+            { 58, "lighter" } // Light Gold Coin
         };
 
         var typeOfColor = colors[player.Data.DefaultOutfit.ColorId];

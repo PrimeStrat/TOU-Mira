@@ -36,6 +36,13 @@
   <string name="Grass">잔디</string>
   <string name="CottonCandy">솜사탕</string>
   <string name="Rainbow">무지개</string>
+  <string name="SkimsBlue">Skims Blue</string>
+  <string name="CloudBlue">Cloud Blue</string>
+  <string name="LavenderPurple">Lavender Purple</string>
+  <string name="SunflowerYellow">Sunflower Yellow</string>
+  <string name="CigarettePackage">Cigarette Package</string>
+  <string name="LightPrincessPink">Light Princess Pink</string>
+  <string name="LightGoldCoin">Light Gold Coin</string>
   <string name="BackButtonText">뒤로가기</string>
   <string name="Glass">유리</string>
   <string name="Ash">재</string>

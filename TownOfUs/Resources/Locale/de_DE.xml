@@ -54,6 +54,13 @@
   <string name="Denim">Denim</string>
   <string name="CottonCandy">Zuckerwatte</string>
   <string name="Rainbow">Regenbogen</string>
+  <string name="SkimsBlue">Skims Blue</string>
+  <string name="CloudBlue">Cloud Blue</string>
+  <string name="LavenderPurple">Lavender Purple</string>
+  <string name="SunflowerYellow">Sunflower Yellow</string>
+  <string name="CigarettePackage">Cigarette Package</string>
+  <string name="LightPrincessPink">Light Princess Pink</string>
+  <string name="LightGoldCoin">Light Gold Coin</string>
   <string name="BackButtonText">Zurück</string>
   <string name="Alignment">Fraktion</string>
   <string name="WikiDescriptionTab">Beschreibung</string>

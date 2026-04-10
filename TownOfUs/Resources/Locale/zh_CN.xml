@@ -211,6 +211,13 @@
   <string name="Denim">牛仔布</string>
   <string name="CottonCandy">棉花糖</string>
   <string name="Rainbow">彩虹</string>
+  <string name="SkimsBlue">Skims Blue</string>
+  <string name="CloudBlue">Cloud Blue</string>
+  <string name="LavenderPurple">Lavender Purple</string>
+  <string name="SunflowerYellow">Sunflower Yellow</string>
+  <string name="CigarettePackage">Cigarette Package</string>
+  <string name="LightPrincessPink">Light Princess Pink</string>
+  <string name="LightGoldCoin">Light Gold Coin</string>
   <string name="BackButtonText">返回</string>
   <string name="YouWereA">你的职业曾是</string>
   <string name="YouWereAn">你的职业曾是</string>
