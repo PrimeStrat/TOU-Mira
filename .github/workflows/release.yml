@@ -5,6 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+env:
+  # BepInEx IL2CPP runtime version to bundle in platform packages
+  BEPINEX_VERSION: "6.0.0-pre.2"
+
 jobs:
   build-and-release:
     runs-on: ubuntu-22.04
@@ -47,6 +51,52 @@ jobs:
         with:
           verbosity: Diagnostic
 
+      - name: Download BepInEx IL2CPP runtimes
+        run: |
+          BEPINEX_BASE="https://github.com/BepInEx/BepInEx/releases/download/v${BEPINEX_VERSION}"
+          mkdir -p bepinex-downloads
+          curl -fSL "${BEPINEX_BASE}/BepInEx-Unity.IL2CPP-win-x86-${BEPINEX_VERSION}.zip" -o bepinex-downloads/win-x86.zip
+          curl -fSL "${BEPINEX_BASE}/BepInEx-Unity.IL2CPP-win-x64-${BEPINEX_VERSION}.zip" -o bepinex-downloads/win-x64.zip
+          curl -fSL "${BEPINEX_BASE}/BepInEx-Unity.IL2CPP-linux-x64-${BEPINEX_VERSION}.zip" -o bepinex-downloads/linux-x64.zip
+
+      - name: Create platform packages
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          BUILD_OUT="TownOfUs/bin/Release"
+
+          # Collect all plugin DLLs from build output (mod + dependencies like MiraAPI, Reactor)
+          PLUGIN_DLLS=$(find "${BUILD_OUT}" -maxdepth 1 -name '*.dll' -type f)
+          echo "Plugin DLLs found:"
+          echo "${PLUGIN_DLLS}"
+
+          create_package() {
+            local PLATFORM_LABEL="$1"
+            local BEPINEX_ZIP="$2"
+            local PKG_NAME="TouMira-v${VERSION}-${PLATFORM_LABEL}"
+            local STAGING="staging/${PKG_NAME}"
+
+            mkdir -p "${STAGING}"
+            unzip -q "${BEPINEX_ZIP}" -d "${STAGING}"
+            mkdir -p "${STAGING}/BepInEx/plugins"
+
+            # Copy all plugin DLLs into the plugins folder
+            echo "${PLUGIN_DLLS}" | while read -r dll; do
+              [ -f "$dll" ] && cp "$dll" "${STAGING}/BepInEx/plugins/"
+            done
+
+            (cd "${STAGING}" && zip -r -q "../../${PKG_NAME}.zip" .)
+            echo "Created ${PKG_NAME}.zip"
+          }
+
+          # Steam & Itch.io — Windows x86
+          create_package "x86-steam-itch" "bepinex-downloads/win-x86.zip"
+
+          # Epic Games Store & MS Store — Windows x64
+          create_package "x64-epic-msstore" "bepinex-downloads/win-x64.zip"
+
+          # Linux & macOS (Steam Deck / Proton) — Linux x64
+          create_package "x64-linux-macOS" "bepinex-downloads/linux-x64.zip"
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
@@ -57,6 +107,9 @@ jobs:
           files: |
             TownOfUs/bin/Release/TownOfUsMira.dll
             TownOfUs/bin/Release/TownOfUsMira.*.nupkg
+            TouMira-v${{ steps.version.outputs.version }}-x86-steam-itch.zip
+            TouMira-v${{ steps.version.outputs.version }}-x64-epic-msstore.zip
+            TouMira-v${{ steps.version.outputs.version }}-x64-linux-macOS.zip
 
       - name: Bump patch version
         run: |
