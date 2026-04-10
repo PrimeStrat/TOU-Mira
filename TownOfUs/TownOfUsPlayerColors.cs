@@ -237,6 +237,55 @@ public static class TownOfUsPlayerColors
         ColorBrightness = CustomColorBrightness.Lighter
     };
 
+    public static CustomColor SkimsBlue { get; } = new("SkimsBlue",
+        new Color32(185, 211, 250, byte.MaxValue),
+        new Color32(93, 106, 125, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Lighter
+    };
+
+    public static CustomColor CloudBlue { get; } = new("CloudBlue",
+        new Color32(105, 207, 255, byte.MaxValue),
+        new Color32(53, 104, 128, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Lighter
+    };
+
+    public static CustomColor LavenderPurple { get; } = new("LavenderPurple",
+        new Color32(170, 116, 214, byte.MaxValue),
+        new Color32(85, 58, 107, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Lighter
+    };
+
+    public static CustomColor SunflowerYellow { get; } = new("SunflowerYellow",
+        new Color32(240, 199, 110, byte.MaxValue),
+        new Color32(120, 100, 55, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Lighter
+    };
+
+    public static CustomColor CigarettePackage { get; } = new("CigarettePackage",
+        new Color32(74, 65, 42, byte.MaxValue),
+        new Color32(37, 33, 21, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Darker
+    };
+
+    public static CustomColor LightPrincessPink { get; } = new("LightPrincessPink",
+        new Color32(235, 143, 210, byte.MaxValue),
+        new Color32(118, 72, 105, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Lighter
+    };
+
+    public static CustomColor LightGoldCoin { get; } = new("LightGoldCoin",
+        new Color32(255, 205, 105, byte.MaxValue),
+        new Color32(128, 103, 53, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Lighter
+    };
+
     public static CustomColor Rainbow { get; } = new("Rainbow",
         new Color32(0, 0, 0, byte.MaxValue))
     {
