@@ -1,3 +1,7 @@
+# Port Notice
+> This is an unofficial port of a port mostly to make small edits for a small group of friends. Do not rely on this to be consistent with the official port.
+
+
 > [!NOTE]
 > This repo is a rewrite of [Town of Us Reactivated](https://github.com/eDonnes124/Town-Of-Us-R) and is under constant development, expect bugs.\
 > This mod is NOT for console versions of Among Us and is NOT host only either, please do not ask for a port or a rewrite.
