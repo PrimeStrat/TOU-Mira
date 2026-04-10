@@ -51,6 +51,24 @@ jobs:
         with:
           verbosity: Diagnostic
 
+      - name: Copy plugin dependencies to build output
+        run: |
+          BUILD_OUT="TownOfUs/bin/Release"
+          # MiraAPI and Reactor are BepInEx plugins that must ship alongside TownOfUsMira.dll.
+          # dotnet build does not automatically copy them to the output folder in IL2CPP projects,
+          # so we pull them explicitly from the NuGet cache.
+          for PKG_DIR in \
+            ~/.nuget/packages/allofus.miraapi \
+            ~/.nuget/packages/reactor; do
+            DLL=$(find "$PKG_DIR" -name '*.dll' -path '*/net6.0/*' ! -name '*Interop*' | head -1)
+            if [ -n "$DLL" ]; then
+              cp "$DLL" "${BUILD_OUT}/"
+              echo "Copied $(basename $DLL) from $DLL"
+            else
+              echo "WARNING: No DLL found under $PKG_DIR"
+            fi
+          done
+
       - name: Download BepInEx IL2CPP runtimes
         run: |
           BEPINEX_BASE="https://github.com/BepInEx/BepInEx/releases/download/v${BEPINEX_VERSION}"
@@ -103,6 +121,7 @@ jobs:
         with:
           tag_name: v${{ steps.version.outputs.version }}
           name: Release v${{ steps.version.outputs.version }}
+          body: "BY AU-Avengers (PrimeStrat Port)"
           generate_release_notes: true
           make_latest: true
           files: |
