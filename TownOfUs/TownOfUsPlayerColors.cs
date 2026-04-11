@@ -258,13 +258,6 @@ public static class TownOfUsPlayerColors
         ColorBrightness = CustomColorBrightness.Lighter
     };
 
-    public static CustomColor SunflowerYellow { get; } = new("SunflowerYellow",
-        new Color32(240, 199, 110, byte.MaxValue),
-        new Color32(120, 100, 55, byte.MaxValue))
-    {
-        ColorBrightness = CustomColorBrightness.Lighter
-    };
-
     public static CustomColor CigarettePackage { get; } = new("CigarettePackage",
         new Color32(74, 65, 42, byte.MaxValue),
         new Color32(37, 33, 21, byte.MaxValue))
