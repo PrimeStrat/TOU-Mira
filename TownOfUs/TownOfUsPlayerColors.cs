@@ -284,4 +284,67 @@ public static class TownOfUsPlayerColors
     {
         ColorBrightness = CustomColorBrightness.Lighter
     };
+
+    public static CustomColor LeosBlue { get; } = new("LeosBlue",
+        new Color32(5, 176, 194, byte.MaxValue),
+        new Color32(3, 88, 97, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Darker
+    };
+
+    public static CustomColor Boob69 { get; } = new("Boob69",
+        new Color32(176, 11, 105, byte.MaxValue),
+        new Color32(88, 6, 53, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Darker
+    };
+
+    public static CustomColor SpicyButter { get; } = new("SpicyButter",
+        new Color32(255, 222, 92, byte.MaxValue),
+        new Color32(128, 111, 46, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Lighter
+    };
+
+    public static CustomColor Smaragdine { get; } = new("Smaragdine",
+        new Color32(74, 153, 118, byte.MaxValue),
+        new Color32(37, 77, 59, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Darker
+    };
+
+    public static CustomColor GooseTurdGreen { get; } = new("GooseTurdGreen",
+        new Color32(84, 255, 162, byte.MaxValue),
+        new Color32(42, 128, 81, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Lighter
+    };
+
+    public static CustomColor PickleGreen { get; } = new("PickleGreen",
+        new Color32(147, 147, 74, byte.MaxValue),
+        new Color32(74, 74, 37, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Darker
+    };
+
+    public static CustomColor HiveHelper { get; } = new("HiveHelper",
+        new Color32(0, 160, 160, byte.MaxValue),
+        new Color32(0, 80, 80, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Darker
+    };
+
+    public static CustomColor GMoney { get; } = new("GMoney",
+        new Color32(255, 214, 236, byte.MaxValue),
+        new Color32(128, 107, 118, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Lighter
+    };
+
+    public static CustomColor HotGirlSummer { get; } = new("HotGirlSummer",
+        new Color32(254, 103, 49, byte.MaxValue),
+        new Color32(127, 52, 25, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Lighter
+    };
 }
