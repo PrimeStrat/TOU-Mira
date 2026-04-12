@@ -347,4 +347,11 @@ public static class TownOfUsPlayerColors
     {
         ColorBrightness = CustomColorBrightness.Lighter
     };
+
+    public static CustomColor EvidentsPurple { get; } = new("EvidentsPurple",
+        new Color32(85, 66, 128, byte.MaxValue),
+        new Color32(43, 33, 64, byte.MaxValue))
+    {
+        ColorBrightness = CustomColorBrightness.Darker
+    };
 }

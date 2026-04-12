@@ -325,7 +325,8 @@ public sealed class MedicRole(IntPtr cppPtr) : CrewmateRole(cppPtr), ITownOfUsRo
             { 63, "darker" }, // Pickle Green
             { 64, "darker" }, // Hive Helper
             { 65, "lighter" }, // G Money
-            { 66, "lighter" } // Hot Girl Summer
+            { 66, "lighter" }, // Hot Girl Summer
+            { 67, "darker" } // Evident's Purple
         };
 
         var typeOfColor = colors[player.Data.DefaultOutfit.ColorId];
