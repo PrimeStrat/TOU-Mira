@@ -64,7 +64,8 @@ if ($upstreamAhead -gt 0) {
     if (-not $hasPlayerColors) {
         Write-Host "✓ Local player colors preserved" -ForegroundColor Green
     }
-} else {
+}
+else {
     Write-Host "✓ Already up to date with upstream" -ForegroundColor Green
 }
 
@@ -75,7 +76,8 @@ if ($Push) {
     
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✓ Pushed successfully" -ForegroundColor Green
-    } else {
+    }
+    else {
         Write-Host "❌ Push failed" -ForegroundColor Red
         exit 1
     }
