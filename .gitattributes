@@ -1,2 +1,7 @@
 # Keep local player colors on merge conflicts
 TownOfUs/TownOfUsPlayerColors.cs merge=ours
+
+# Auto-merge strategy for most other files
+*.cs merge=union
+*.xml merge=union
+*.json merge=union
