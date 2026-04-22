@@ -1,4 +1,3 @@
-using System.Collections;
 using AmongUs.GameOptions;
 using MiraAPI.Patches.Freeplay;
 using HarmonyLib;
@@ -10,9 +9,6 @@ using MiraAPI.Roles;
 using MiraAPI.Utilities;
 using Reactor.Utilities;
 using TownOfUs.Networking;
-using TownOfUs.Utilities;
-using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TownOfUs.Patches.Misc;
 
@@ -79,24 +75,6 @@ public static class MiraApiPatches
         return true;
     }
 
-    [HarmonyPatch(typeof(CustomMurderRpc), nameof(CustomMurderRpc.CustomMurder))]
-    [HarmonyFinalizer]
-    public static Exception CustomMurderFinalizer(
-        Exception __exception,
-        PlayerControl source,
-        PlayerControl target,
-        MurderResultFlags resultFlags,
-        bool createDeadBody)
-    {
-        if (__exception != null && resultFlags.HasFlag(MurderResultFlags.Succeeded))
-        {
-            Error($"Exception in CustomMurder, running cleanup: {__exception}");
-            RunKillCoroutineCleanup(source, target, createDeadBody);
-        }
-
-        return null!;
-    }
-
     [HarmonyPatch(typeof(CustomMurderRpc), nameof(CustomMurderRpc.RpcCustomMurder), typeof(PlayerControl), typeof(PlayerControl), typeof(MeetingCheck), typeof(bool), typeof(bool), typeof(bool), typeof(bool), typeof(bool), typeof(bool))]
     [HarmonyPrefix]
     public static bool RpcAltCustomMurderPatch(
@@ -125,9 +103,19 @@ public static class MiraApiPatches
             beforeMurderEvent.Cancel();
         }
 
-        if (beforeMurderEvent.IsCancelled)
+        if (target.ProtectedByGa())
+        {
+            beforeMurderEvent.Cancel();
+            murderResultFlags = MurderResultFlags.FailedProtected;
+        }
+        else if (beforeMurderEvent.IsCancelled)
         {
             murderResultFlags = MurderResultFlags.FailedError;
+        }
+
+        if (beforeMurderEvent.IsCancelled && source.AmOwner)
+        {
+            source.isKilling = true;
         }
 
         // Track kill cooldown before CustomMurder for Time Lord rewind
@@ -170,6 +158,7 @@ public static class MiraApiPatches
     {
         if (LobbyBehaviour.Instance)
         {
+            source.isKilling = false;
             MiscUtils.RunAnticheatWarning(source);
             return false;
         }
@@ -219,118 +208,5 @@ public static class MiraApiPatches
     public static void ClosePatch()
     {
         HudManager.Instance.PlayerCam.OverrideScreenShakeEnabled = true;
-    }
-
-    /// <summary>
-    /// Wraps MiraAPI's CoPerformCustomKill coroutine to guarantee that AfterMurderEvent fires
-    /// and cleanup occurs even if the coroutine throws an exception mid-execution.
-    /// This fixes Mystic death notifications, dead body visibility, and all other
-    /// AfterMurderEvent-dependent handlers when the kill animation coroutine fails.
-    /// </summary>
-    private static bool _bypassCoPerformPatch;
-
-    [HarmonyPatch(typeof(CustomMurderRpc), nameof(CustomMurderRpc.CoPerformCustomKill))]
-    [HarmonyPrefix]
-    public static bool CoPerformCustomKillSafetyPatch(
-        KillAnimation anim,
-        PlayerControl source,
-        PlayerControl target,
-        bool createDeadBody,
-        bool teleportMurderer,
-        ref IEnumerator __result)
-    {
-        if (_bypassCoPerformPatch)
-        {
-            return true;
-        }
-
-        _bypassCoPerformPatch = true;
-        var original = CustomMurderRpc.CoPerformCustomKill(anim, source, target, createDeadBody, teleportMurderer);
-        _bypassCoPerformPatch = false;
-
-        __result = CoSafePerformCustomKill(original, source, target, createDeadBody);
-        return false;
-    }
-
-    private static IEnumerator CoSafePerformCustomKill(
-        IEnumerator original,
-        PlayerControl source,
-        PlayerControl target,
-        bool createDeadBody)
-    {
-        while (true)
-        {
-            object current;
-            try
-            {
-                if (!original.MoveNext())
-                {
-                    yield break;
-                }
-
-                current = original.Current;
-            }
-            catch (Exception ex)
-            {
-                Error($"Error in CoPerformCustomKill, running cleanup: {ex}");
-                RunKillCoroutineCleanup(source, target, createDeadBody);
-                yield break;
-            }
-
-            yield return current;
-        }
-    }
-
-    private static void RunKillCoroutineCleanup(
-        PlayerControl source,
-        PlayerControl target,
-        bool createDeadBody)
-    {
-        try
-        {
-            // Enable the dead body if it was created but not yet enabled
-            DeadBody? deadBody = null;
-            if (createDeadBody)
-            {
-                foreach (var body in Object.FindObjectsOfType<DeadBody>())
-                {
-                    if (body.ParentId == target.PlayerId)
-                    {
-                        deadBody = body;
-                        if (!body.enabled)
-                        {
-                            body.enabled = true;
-                        }
-
-                        break;
-                    }
-                }
-            }
-
-            // Fire AfterMurderEvent that the failed coroutine never reached
-            var afterMurderEvent = new AfterMurderEvent(source, target, deadBody);
-            MiraEventManager.InvokeEvent(afterMurderEvent);
-
-            // Restore movement
-            KillAnimation.SetMovement(source, true);
-            KillAnimation.SetMovement(target, true);
-
-            // Cleanup participant state
-            if (source.AmOwner || target.AmOwner)
-            {
-                var cam = Camera.main?.GetComponent<FollowerCamera>();
-                if (cam != null)
-                {
-                    cam.Locked = false;
-                }
-
-                PlayerControl.LocalPlayer.isKilling = false;
-                source.isKilling = false;
-            }
-        }
-        catch (Exception cleanupEx)
-        {
-            Error($"Error in CoPerformCustomKill cleanup: {cleanupEx}");
-        }
     }
 }
