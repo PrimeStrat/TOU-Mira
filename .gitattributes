@@ -1,0 +1,2 @@
+# Keep local player colors on merge conflicts
+TownOfUs/TownOfUsPlayerColors.cs merge=ours
