@@ -27,9 +27,9 @@ if ($gitStatus) {
     exit 1
 }
 
-# Fetch latest from both remotes
+# Fetch latest from both remotes (including tags)
 Write-Host "`n📡 Fetching latest changes..." -ForegroundColor Yellow
-git fetch upstream main
+git fetch upstream main --tags
 git fetch origin main
 
 if ($LASTEXITCODE -ne 0) {
@@ -37,18 +37,29 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
+# Find latest release tag from upstream
+$latestTag = git tag --list --sort=-version:refname | Select-Object -First 1
+if (-not $latestTag) {
+    Write-Host "⚠️  No release tags found. Falling back to upstream/main" -ForegroundColor Yellow
+    $upstreamTarget = "upstream/main"
+}
+else {
+    $upstreamTarget = $latestTag
+    Write-Host "📌 Latest stable release: $latestTag" -ForegroundColor Cyan
+}
+
 # Get commit counts
-$upstreamAhead = @(git rev-list "HEAD..upstream/main" 2>$null).Count
+$upstreamAhead = @(git rev-list "HEAD..$upstreamTarget" 2>$null).Count
 $originAhead = @(git rev-list "HEAD..origin/main" 2>$null).Count
 
 Write-Host "✓ Fetched successfully" -ForegroundColor Green
-Write-Host "  - upstream/main: $upstreamAhead commits ahead" -ForegroundColor Gray
+Write-Host "  - $upstreamTarget`: $upstreamAhead commits ahead" -ForegroundColor Gray
 Write-Host "  - origin/main: $originAhead commits ahead" -ForegroundColor Gray
 
 # Merge from upstream if there are new commits
 if ($upstreamAhead -gt 0) {
-    Write-Host "`n🔀 Merging upstream/main..." -ForegroundColor Yellow
-    git merge upstream/main --no-edit
+    Write-Host "`n🔀 Merging $upstreamTarget..." -ForegroundColor Yellow
+    git merge $upstreamTarget --no-edit
     
     if ($LASTEXITCODE -ne 0) {
         Write-Host "❌ Merge conflict detected!" -ForegroundColor Red
