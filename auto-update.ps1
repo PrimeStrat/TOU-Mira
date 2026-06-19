@@ -37,16 +37,14 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-# Find latest release tag from upstream
-$latestTag = git tag --list --sort=-version:refname | Select-Object -First 1
+# Find latest stable release tag from upstream (excludes pre-release tags with hyphens)
+$latestTag = git tag --list --sort=-version:refname | Where-Object { $_ -match '^v\d+\.\d+(\.\d+)*$' } | Select-Object -First 1
 if (-not $latestTag) {
-    Write-Host "⚠️  No release tags found. Falling back to upstream/main" -ForegroundColor Yellow
-    $upstreamTarget = "upstream/main"
+    Write-Host "❌ No stable release tags found. Aborting to avoid pulling unreleased upstream commits." -ForegroundColor Red
+    exit 1
 }
-else {
-    $upstreamTarget = $latestTag
-    Write-Host "📌 Latest stable release: $latestTag" -ForegroundColor Cyan
-}
+$upstreamTarget = $latestTag
+Write-Host "📌 Latest stable release: $latestTag" -ForegroundColor Cyan
 
 # Get commit counts
 $upstreamAhead = @(git rev-list "HEAD..$upstreamTarget" 2>$null).Count
