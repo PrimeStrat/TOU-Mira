@@ -38,7 +38,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # Find latest stable release tag from upstream (excludes pre-release tags with hyphens)
-$latestTag = git tag --list --sort=-version:refname | Where-Object { $_ -match '^v\d+\.\d+(\.\d+)*$' } | Select-Object -First 1
+$latestTag = git tag --list --sort=-version:refname | Where-Object { $_ -match '^v?\d+\.\d+(\.\d+)*$' } | Select-Object -First 1
 if (-not $latestTag) {
     Write-Host "ERROR: No stable release tags found. Aborting to avoid pulling unreleased upstream commits." -ForegroundColor Red
     exit 1
